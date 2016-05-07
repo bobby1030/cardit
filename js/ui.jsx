@@ -57,7 +57,7 @@ var Spinner = React.createClass ({
 
 
 var DATA
-var DATA_limit = 5
+var DATA_limit = 10
 
 function fetch_data() {
 
