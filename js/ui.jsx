@@ -1,3 +1,5 @@
+// Define Components
+
 var Card = React.createClass({
 
     render: function() {
@@ -51,14 +53,21 @@ var Spinner = React.createClass ({
 	}
 })
 
+// End Define Conponents
+
+
 var DATA
 var DATA_limit = 5
 
 function fetch_data() {
 
+	ReactDOM.unmountComponentAtNode(document.getElementById('content')); // Kill Exist Cards
 	ReactDOM.render(<Spinner />, document.getElementById('spin')); // Render Spinner Before Load Data
 
 	var subreddit = location.hash.replace(/\#/,'')
+
+	$('#search_input').val(subreddit)
+
 	if (subreddit) {
 		$.getJSON('http://www.reddit.com/r/' + subreddit + '/new.json?' + 'limit=' + DATA_limit, function(data){
 			DATA = data
@@ -74,12 +83,21 @@ function fetch_data() {
 	}
 }
 
+// Render Cards
 function render() {
 	ReactDOM.render(<Card json={DATA.data.children} />, document.getElementById('content'));
+	
 }
+
+// First time fetching
+fetch_data()
 
 // Fetch data again if subreddit change
 window.onhashchange = fetch_data
 
-// First time fetching
-fetch_data()
+$('#search_input').keypress(function(e) {
+    if(e.which == 13) {
+        location.hash = '#' + $('#search_input').val()
+    }
+})
+

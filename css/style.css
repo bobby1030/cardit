@@ -1,3 +1,5 @@
+/* Spinner */
+
 #spin {
   position:absolute;
   display: flex;
@@ -48,4 +50,15 @@
     transform: scale(1.0);
     -webkit-transform: scale(1.0);
   }
+}
+
+/* SearchBox */
+
+#search {
+  position: fixed;
+  right: 0.3em;
+  bottom: 0.5em;
+  z-index: 1;
+
+  width: 16em;
 }
