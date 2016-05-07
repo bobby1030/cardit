@@ -4,7 +4,13 @@ var Card = React.createClass({
 
     	var content = this.props.json.map(function(arg){
 
-    		var imgURL = arg.data.preview.images[0].source.url
+    		
+    		if (!arg.data.preview) {
+    			var imgURL = 'reddit.jpg'
+    		} else {
+    			var imgURL = arg.data.preview.images[0].source.url
+    		}
+
     		var titleURL = arg.data.url
     		var title = arg.data.title
     		var date = new Date(arg.data.created_utc).toTimeString()
