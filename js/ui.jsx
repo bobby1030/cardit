@@ -4,18 +4,23 @@ var Card = React.createClass({
 
     	var content = this.props.json.map(function(arg){
 
-		return(
-    		<div className="ui fluid card">
-    		<a className="image" href={arg.data.preview.images[0].source.url}>
-          			<img src={arg.data.preview.images[0].source.url} />
-        	</a>
-        	<div className="content">
-          		<a className="header" href={arg.data.url}>{arg.data.title}</a>
-          		<div className="meta">
-            		<span className="date">GIVE ME A DATE</span>
-          		</div>
-        	</div>
-        	</div>
+    		var imgURL = arg.data.preview.images[0].source.url
+    		var titleURL = arg.data.url
+    		var title = arg.data.title
+    		var date = 'date'
+
+			return(
+    			<div className="ui fluid card">
+    				<a className="image" href={imgURL}>
+          				<img src={imgURL} />
+        			</a>
+        			<div className="content">
+          				<a className="header" href={titleURL}>{title}</a>
+         	 			<div className="meta">
+            				<span className="date">{date}</span>
+          				</div>
+       		 		</div>
+        		</div>
         	)
     	})
 
@@ -28,36 +33,47 @@ var Card = React.createClass({
 
 });
 
+var Spinner = React.createClass ({
+	render: function() {
+
+		return (
+			<div className="spinner">
+	        	<div className="double-bounce1" />
+	        	<div className="double-bounce2" />
+	      	</div>
+      	)
+	}
+})
+
 var DATA
 var DATA_limit = 5
 
 function fetch_data() {
+
+	ReactDOM.render(<Spinner />, document.getElementById('spin'));
 
 	var subreddit = location.hash.replace(/\#/,'')
 	if (subreddit) {
 		$.getJSON('http://www.reddit.com/r/' + subreddit + '/new.json?' + 'limit=' + DATA_limit, function(data){
 			DATA = data
 			render()
+			ReactDOM.unmountComponentAtNode(document.getElementById('spin'));
 		}) // Fetch subreddit data
 	}else{
 		$.getJSON('http://www.reddit.com/new.json?' + 'limit=' + DATA_limit, function(data){
 			DATA = data
 			render()
+			ReactDOM.unmountComponentAtNode(document.getElementById('spin'));
 		})	// If no subreddit given, fetch reddit homepage.	
 	}
 }
-
-// function parse_data() {
-// 	DATA_rawjson.data.children.forEach(function(element){
-// 		DATA.image.push(element.data.preview.images[0].source.url)
-// 	})
-// 	console.log(DATA.image)
-// 	render()
-//	
-// }
 
 function render() {
 	ReactDOM.render(<Card json={DATA.data.children} />, document.getElementById('content'));
 }
 
+// Fetch data again if subreddit change
+window.onhashchange = fetch_data
+
+// First time fetching
 fetch_data()
