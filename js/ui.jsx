@@ -7,7 +7,7 @@ var Card = React.createClass({
     		var imgURL = arg.data.preview.images[0].source.url
     		var titleURL = arg.data.url
     		var title = arg.data.title
-    		var date = 'date'
+    		var date = new Date(arg.data.created_utc).toTimeString()
 
 			return(
     			<div className="ui fluid card">
@@ -50,7 +50,7 @@ var DATA_limit = 5
 
 function fetch_data() {
 
-	ReactDOM.render(<Spinner />, document.getElementById('spin'));
+	ReactDOM.render(<Spinner />, document.getElementById('spin')); // Render Spinner Before Load Data
 
 	var subreddit = location.hash.replace(/\#/,'')
 	if (subreddit) {
