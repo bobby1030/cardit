@@ -139,8 +139,6 @@ function render() {
     ReactDOM.render(<Main />, document.getElementById('content'));
 }
 
-
-
 // First time fetching
 fetch.start()
 
