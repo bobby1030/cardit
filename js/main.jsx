@@ -1,3 +1,10 @@
+var React = require('react');
+var ReactDOM = require('react-dom');
+var $ = require('jquery');
+require('semantic-ui/dist/semantic.min.css')
+require('../css/style.css')
+var noImage = require('../reddit.jpg')
+
 // Define Components
 
 var Main = React.createClass({
@@ -22,7 +29,7 @@ var Card = React.createClass({
                 
                 
                     if (!arg.data.preview) {
-                        var imgURL = 'reddit.jpg'
+                        var imgURL = noImage
                     } else {
                         var imgURL = arg.data.preview.images[0].source.url
                     }
