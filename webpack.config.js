@@ -1,3 +1,5 @@
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+
 module.exports = {
     entry: ['./js/main.jsx'],
     output: {
@@ -39,5 +41,8 @@ module.exports = {
                 loader: 'file?name=images/[name].[hash].[ext]&mimetype=image/svg+xml'
             }
         ]
-    }
+    },
+    plugins: [
+    	new CopyWebpackPlugin([{ from: './CNAME' }])
+    ]
 };
