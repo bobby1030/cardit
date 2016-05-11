@@ -15,7 +15,8 @@
   "homepage": "https://github.com/bobby1030/cardit#readme",
   "scripts": {
     "dev": "webpack-dev-server --devtool eval --progress --colors --content-base dist",
-    "build": "NODE_ENV=production webpack --progress"
+    "build": "NODE_ENV=production webpack --progress",
+    "deploy": "gulp deploy"
   },
   "dependencies": {
     "jquery": "^2.2.3",
@@ -29,6 +30,8 @@
     "babel-preset-react": "^6.5.0",
     "css-loader": "^0.23.1",
     "file-loader": "^0.8.5",
+    "gulp": "^3.9.1",
+    "gulp-uglify": "^1.5.3",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1"
