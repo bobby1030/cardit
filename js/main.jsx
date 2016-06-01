@@ -151,4 +151,3 @@ fetch.start()
 
 // Fetch data again if subreddit change
 window.onhashchange = fetch.start
-

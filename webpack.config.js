@@ -2,7 +2,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 var path = require('path');
 
 module.exports = {
-    entry: ['./js/main.jsx'],
+    entry: ['./js/dev.jsx'],
     output: {
         path: './dist',
         publicPath: '/',
