@@ -11,18 +11,19 @@ var Main = React.createClass({
 
         return ({
             subreddit: '',
-            subredditLimit: 10,
+            subredditLimit: 25,
             spinnerDisplay: true,
             subredditData: null
         });
     },
 
-    changeSubreddit: function(subreddit) {
+    controlOnSubmit: function(subreddit, limit) {
         this.setState({
-            subreddit: subreddit
+            subreddit: subreddit,
+            subredditLimit: limit
         })
 
-        this.fetchSubredditData(subreddit)
+        this.fetchSubredditData(subreddit, limit)
     },
 
     startSpinner: function() {
@@ -43,13 +44,13 @@ var Main = React.createClass({
         this.fetchSubredditData(this.state.subreddit)
     },
 
-    fetchSubredditData: function(subreddit) {
+    fetchSubredditData: function(subreddit, limit) {
         var parent = this
 
         this.startSpinner()
         console.log('Gonna Fetch:' + subreddit)
         if (subreddit.length > 0) {
-            $.getJSON('http://www.reddit.com/r/' + subreddit + '/new.json?' + 'limit=' + parent.state.subredditLimit, function(res) {
+            $.getJSON('http://www.reddit.com/r/' + subreddit + '/new.json?' + 'limit=' + limit, function(res) {
                 parent.setState({
                     subredditData: res.data.children
                 })
@@ -61,7 +62,7 @@ var Main = React.createClass({
                     parent.stopSpinner()
                 }); // If error, redirect to homepage
         } else {
-            $.getJSON('http://www.reddit.com/new.json?' + 'limit=' + parent.state.subredditLimit, function(res) {
+            $.getJSON('http://www.reddit.com/new.json?' + 'limit=' + limit, function(res) {
                 parent.setState({
                     subredditData: res.data.children
                 })
@@ -78,7 +79,7 @@ var Main = React.createClass({
     },
 
     render: function() {
-        
+
         var renderCard;
         if (this.state.subredditData != null) {
             renderCard = <Card data={ this.state.subredditData } didMount={ this.stopSpinner } />
@@ -89,10 +90,10 @@ var Main = React.createClass({
               <Spinner display={ this.state.spinnerDisplay } />
               <div className="ui centered stackable grid">
                 <div className="twelve wide column">
-                  {renderCard}
+                  { renderCard }
                 </div>
               </div>
-              <Search subreddit={ this.state.subreddit } onSubmit={ this.changeSubreddit } />
+              <ControlBox subreddit={ this.state.subreddit } limit={ this.state.subredditLimit } onSubmit={ this.controlOnSubmit } />
             </div>
             );
     }
@@ -106,8 +107,7 @@ var Card = React.createClass({
         return (
 
             <div>
-              { 
-                this.props.data.map(function(arg) {
+              { this.props.data.map(function(arg) {
                 
                     if (!arg.data.preview) {
                         var imgURL = noImage
@@ -125,11 +125,9 @@ var Card = React.createClass({
                           <CardContent title={ title } titleURL={ titleURL } date={ date } />
                         </div>
                     )
-                })
-
-                 }
+                }) }
             </div>
-            )
+        )
     },
 
     componentDidMount() {
@@ -160,32 +158,49 @@ var CardContent = React.createClass({
     }
 })
 
-var Search = React.createClass({
+var ControlBox = React.createClass({
 
     getInitialState: function() {
         return ({
-            subreddit: this.props.subreddit
+            subreddit: this.props.subreddit,
+            limit: this.props.limit
         })
     },
 
     handleSubmit: function(event) {
         event.preventDefault()
-        this.props.onSubmit(this.state.subreddit)
+        this.props.onSubmit(this.state.subreddit, this.state.limit)
     },
 
-    handleChange: function(event) {
+    handleSubredditChange: function(event) {
         this.setState({
             subreddit: event.target.value.trim()
         })
     },
 
+    handleLimitChange: function(event) {
+        this.setState({
+            limit: event.target.value.trim()
+        })
+    },
+
     render: function() {
-        return (<form onSubmit={ this.handleSubmit }>
-                  <div id="search" className="ui left icon input">
-                    <input id="search_input" placeholder="Goto Subreddit..." type="text" value={ this.state.subreddit } onChange={ this.handleChange } />
-                    <i className="tag icon"></i>
-                  </div>
-                </form>)
+        return (<div id="control" className="ui segment">
+                  <form onSubmit={ this.handleSubmit }>
+                    <div className="ui left icon input">
+                      <input name="subreddit" placeholder="Goto Subreddit..." type="text" value={ this.state.subreddit } onChange={ this.handleSubredditChange } />
+                      <i className="reddit square icon"></i>
+                    </div>
+                  </form>
+                  <form onSubmit={ this.handleSubmit }>
+                    <div className="ui left icon input">
+                      <input name="limit" placeholder="Cards (Below 100)" type="text" value={ this.state.limit } onChange={ this.handleLimitChange } />
+                      <i className="filter icon"></i>
+                    </div>
+                  </form>
+                </div>
+
+        )
     }
 })
 
