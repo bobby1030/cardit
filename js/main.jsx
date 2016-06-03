@@ -4,7 +4,6 @@ var $ = require('jquery');
 require('semantic-ui/dist/semantic.min.css')
 require('../css/style.css')
 var noImage = require('../reddit.jpg')
-var testJSON = require('./testing.json')
 
 var Main = React.createClass({
 
