@@ -4,29 +4,111 @@ var $ = require('jquery');
 require('semantic-ui/dist/semantic.min.css')
 require('../css/style.css')
 var noImage = require('../reddit.jpg')
-
-// Define Components
+var testJSON = require('./testing.json')
 
 var Main = React.createClass({
+
+    getInitialState: function() {
+
+        return ({
+            subreddit: '',
+            subredditLimit: 10,
+            spinnerDisplay: true,
+            subredditData: null
+        });
+    },
+
+    changeSubreddit: function(subreddit) {
+        this.setState({
+            subreddit: subreddit
+        })
+
+        this.fetchSubredditData(subreddit)
+    },
+
+    startSpinner: function() {
+        this.setState({
+            spinnerDisplay: true
+        })
+        console.log('Spinner Started')
+    },
+
+    stopSpinner: function() {
+        this.setState({
+            spinnerDisplay: false
+        })
+        console.log('Spinner Stopped')
+    },
+
+    componentWillMount() {
+        this.fetchSubredditData(this.state.subreddit)
+    },
+
+    fetchSubredditData: function(subreddit) {
+        var parent = this
+
+        this.startSpinner()
+        console.log('Gonna Fetch:' + subreddit)
+        if (subreddit.length > 0) {
+            $.getJSON('http://www.reddit.com/r/' + subreddit + '/new.json?' + 'limit=' + parent.state.subredditLimit, function(res) {
+                parent.setState({
+                    subredditData: res.data.children
+                })
+                console.log('Fetch Success')
+                parent.stopSpinner()
+            }) // Fetch subreddit data
+                .error(function() {
+                    console.log("404: Cannot Found The Subreddit: " + subreddit);
+                    parent.stopSpinner()
+                }); // If error, redirect to homepage
+        } else {
+            $.getJSON('http://www.reddit.com/new.json?' + 'limit=' + parent.state.subredditLimit, function(res) {
+                parent.setState({
+                    subredditData: res.data.children
+                })
+                console.log('Fetch Home Success')
+                parent.stopSpinner()
+            }) // If no subreddit given, fetch reddit homepage.  
+                .error(function() {
+                    console.log("404: Cannot Connect To Reddit");
+                    parent.stopSpinner()
+                });
+        }
+
+
+    },
+
     render: function() {
+        
+        var renderCard;
+        if (this.state.subredditData != null) {
+            renderCard = <Card data={ this.state.subredditData } didMount={ this.stopSpinner } />
+        }
+
         return (
             <div>
-              <Card json={ DATA.res.data.children } />
-              <Search />
+              <Spinner display={ this.state.spinnerDisplay } />
+              <div className="ui centered stackable grid">
+                <div className="twelve wide column">
+                  {renderCard}
+                </div>
+              </div>
+              <Search subreddit={ this.state.subreddit } onSubmit={ this.changeSubreddit } />
             </div>
-        )
+            );
     }
+
+
 })
 
 var Card = React.createClass({
 
-    render: function() {
-
+    render() {
         return (
 
             <div>
-              { this.props.json.map(function(arg) {
-                
+              { 
+                this.props.data.map(function(arg) {
                 
                     if (!arg.data.preview) {
                         var imgURL = noImage
@@ -40,114 +122,92 @@ var Card = React.createClass({
                 
                     return (
                         <div className="ui fluid card">
-                          <a
-                             className="image"
-                             href={ imgURL }><img src={ imgURL } /></a>
-                          <div className="content">
-                            <a
-                               className="header"
-                               href={ titleURL }>
-                              { title }
-                            </a>
-                            <div className="meta">
-                              <span className="date">{ date }</span>
-                            </div>
-                          </div>
+                          <CardImage imgURL={ imgURL } />
+                          <CardContent title={ title } titleURL={ titleURL } date={ date } />
                         </div>
                     )
-                }
-                ) }
+                })
+
+                 }
             </div>
-        )
-    }
-
-});
-
-var Search = React.createClass({
-
-    componentDidMount: function() {
-        $('#search_input').keypress(function(e) {
-            if (e.which == 13) {
-                location.hash = '#' + $('#search_input').val()
-            }
-        })
+            )
     },
 
-    render: function() {
-        return (<div
-                     id="search"
-                     className="ui left icon input">
-                  <input
-                         id="search_input"
-                         placeholder="Goto Subreddit..."
-                         type="text"
-                         defaultValue={ DATA.subreddit } />
-                  <i className="tag icon"></i>
+    componentDidMount() {
+        this.props.didMount()
+    }
+})
+
+var CardImage = React.createClass({
+
+    render() {
+        return (<a className="image" href={ this.props.imgURL }><img src={ this.props.imgURL } />
+                </a>)
+    }
+
+})
+
+var CardContent = React.createClass({
+
+    render() {
+        return (<div className="content">
+                  <a className="header" href={ this.props.titleURL }>
+                    { this.props.title }
+                  </a>
+                  <div className="meta">
+                    <span className="date">{ this.props.date }</span>
+                  </div>
                 </div>)
     }
 })
 
-var Spinner = React.createClass({
-    render: function() {
+var Search = React.createClass({
 
-        return (
-            <div className="spinner">
-              <div className="double-bounce1" />
-              <div className="double-bounce2" />
-            </div>
-        )
+    getInitialState: function() {
+        return ({
+            subreddit: this.props.subreddit
+        })
+    },
+
+    handleSubmit: function(event) {
+        event.preventDefault()
+        this.props.onSubmit(this.state.subreddit)
+    },
+
+    handleChange: function(event) {
+        this.setState({
+            subreddit: event.target.value.trim()
+        })
+    },
+
+    render: function() {
+        return (<form onSubmit={ this.handleSubmit }>
+                  <div id="search" className="ui left icon input">
+                    <input id="search_input" placeholder="Goto Subreddit..." type="text" value={ this.state.subreddit } onChange={ this.handleChange } />
+                    <i className="tag icon"></i>
+                  </div>
+                </form>)
     }
 })
 
-// End Define Conponents
+var Spinner = React.createClass({
 
-var DATA = {}
-DATA.limit = 10
-DATA.subreddit
+    render: function() {
 
-var fetch = {
-    start: function() {
-    	fetch.before()
-    },
+        if (this.props.display == true) {
+            return (
+                <div id="spin">
+                  <div className="spinner">
+                    <div className="double-bounce1" />
+                    <div className="double-bounce2" />
+                  </div>
+                </div>
+            )
+        } else {
+            return null
+        }
 
-    before: function() {
-    	DATA.subreddit = location.hash.replace(/\#/, '')
-	    ReactDOM.unmountComponentAtNode(document.getElementById('content')); // Kill Exist Cards
-	    ReactDOM.render(<Spinner />, document.getElementById('spin')); // Render Spinner Before Load Data
-	    fetch.fetch()
-    },
-
-    fetch: function(){
-
-	   	if (DATA.subreddit) {
-	        $.getJSON('http://www.reddit.com/r/' + DATA.subreddit + '/new.json?' + 'limit=' + DATA.limit, function(data) {
-	        	DATA.res = data
-	        	ReactDOM.unmountComponentAtNode(document.getElementById('spin'));
-	        	fetch.after()
-	       	}) // Fetch subreddit data
-	       	.error(function() { alert("404: Cannot Found The Subreddit: " + DATA.subreddit); location.hash = ''}); // If error, redirect to homepage
-	    } else {
-	        $.getJSON('http://www.reddit.com/new.json?' + 'limit=' + DATA.limit, function(data) {
-	            DATA.res = data
-	            ReactDOM.unmountComponentAtNode(document.getElementById('spin'));
-	            fetch.after()
-	        })// If no subreddit given, fetch reddit homepage.	
-	        .error(function() { alert("404: Cannot Connect To Reddit"); }); 
-	  	}
-    },
-
-    after: function(){
-    	render()
     }
-}
+})
 
-// Render Cards
-function render() {
-    ReactDOM.render(<Main />, document.getElementById('content'));
-}
-
-// First time fetching
-fetch.start()
-
-// Fetch data again if subreddit change
-window.onhashchange = fetch.start
+ReactDOM.render(<Main />, document.getElementById('content'));

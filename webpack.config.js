@@ -2,7 +2,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 var path = require('path');
 
 module.exports = {
-    entry: ['./js/dev.jsx'],
+    entry: ['./js/main.jsx'],
     output: {
         path: './dist',
         publicPath: '/',
@@ -42,12 +42,15 @@ module.exports = {
                 test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
                 loader: 'file?name=images/[name].[hash].[ext]&mimetype=image/svg+xml'
             }
+
         ]
     },
     devServer: {
-    	outputPath: path.join(__dirname, 'dist')
+        outputPath: path.join(__dirname, 'dist')
     },
     plugins: [
-    	new CopyWebpackPlugin([{ from: './CNAME' }])
+        new CopyWebpackPlugin([{
+            from: './CNAME'
+        }])
     ]
 };
