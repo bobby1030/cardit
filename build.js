@@ -96,7 +96,7 @@
 	    },
 
 	    componentWillMount() {
-	        this.fetchSubredditData(this.state.subreddit);
+	        this.fetchSubredditData(this.state.subreddit, this.state.subredditLimit);
 	    },
 
 	    fetchSubredditData: function (subreddit, limit) {
