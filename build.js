@@ -66,18 +66,19 @@
 
 	        return {
 	            subreddit: '',
-	            subredditLimit: 10,
+	            subredditLimit: 25,
 	            spinnerDisplay: true,
 	            subredditData: null
 	        };
 	    },
 
-	    changeSubreddit: function (subreddit) {
+	    controlOnSubmit: function (subreddit, limit) {
 	        this.setState({
-	            subreddit: subreddit
+	            subreddit: subreddit,
+	            subredditLimit: limit
 	        });
 
-	        this.fetchSubredditData(subreddit);
+	        this.fetchSubredditData(subreddit, limit);
 	    },
 
 	    startSpinner: function () {
@@ -98,13 +99,13 @@
 	        this.fetchSubredditData(this.state.subreddit);
 	    },
 
-	    fetchSubredditData: function (subreddit) {
+	    fetchSubredditData: function (subreddit, limit) {
 	        var parent = this;
 
 	        this.startSpinner();
 	        console.log('Gonna Fetch:' + subreddit);
 	        if (subreddit.length > 0) {
-	            $.getJSON('http://www.reddit.com/r/' + subreddit + '/new.json?' + 'limit=' + parent.state.subredditLimit, function (res) {
+	            $.getJSON('http://www.reddit.com/r/' + subreddit + '/new.json?' + 'limit=' + limit, function (res) {
 	                parent.setState({
 	                    subredditData: res.data.children
 	                });
@@ -116,7 +117,7 @@
 	                parent.stopSpinner();
 	            }); // If error, redirect to homepage
 	        } else {
-	                $.getJSON('http://www.reddit.com/new.json?' + 'limit=' + parent.state.subredditLimit, function (res) {
+	                $.getJSON('http://www.reddit.com/new.json?' + 'limit=' + limit, function (res) {
 	                    parent.setState({
 	                        subredditData: res.data.children
 	                    });
@@ -150,7 +151,7 @@
 	                    renderCard
 	                )
 	            ),
-	            React.createElement(Search, { subreddit: this.state.subreddit, onSubmit: this.changeSubreddit })
+	            React.createElement(ControlBox, { subreddit: this.state.subreddit, limit: this.state.subredditLimit, onSubmit: this.controlOnSubmit })
 	        );
 	    }
 
@@ -231,36 +232,57 @@
 	    }
 	});
 
-	var Search = React.createClass({
-	    displayName: 'Search',
+	var ControlBox = React.createClass({
+	    displayName: 'ControlBox',
 
 
 	    getInitialState: function () {
 	        return {
-	            subreddit: this.props.subreddit
+	            subreddit: this.props.subreddit,
+	            limit: this.props.limit
 	        };
 	    },
 
 	    handleSubmit: function (event) {
 	        event.preventDefault();
-	        this.props.onSubmit(this.state.subreddit);
+	        this.props.onSubmit(this.state.subreddit, this.state.limit);
 	    },
 
-	    handleChange: function (event) {
+	    handleSubredditChange: function (event) {
 	        this.setState({
 	            subreddit: event.target.value.trim()
 	        });
 	    },
 
+	    handleLimitChange: function (event) {
+	        this.setState({
+	            limit: event.target.value.trim()
+	        });
+	    },
+
 	    render: function () {
 	        return React.createElement(
-	            'form',
-	            { onSubmit: this.handleSubmit },
+	            'div',
+	            { id: 'control', className: 'ui segment' },
 	            React.createElement(
-	                'div',
-	                { id: 'search', className: 'ui left icon input' },
-	                React.createElement('input', { id: 'search_input', placeholder: 'Goto Subreddit...', type: 'text', value: this.state.subreddit, onChange: this.handleChange }),
-	                React.createElement('i', { className: 'tag icon' })
+	                'form',
+	                { onSubmit: this.handleSubmit },
+	                React.createElement(
+	                    'div',
+	                    { className: 'ui left icon input' },
+	                    React.createElement('input', { name: 'subreddit', placeholder: 'Goto Subreddit...', type: 'text', value: this.state.subreddit, onChange: this.handleSubredditChange }),
+	                    React.createElement('i', { className: 'reddit square icon' })
+	                )
+	            ),
+	            React.createElement(
+	                'form',
+	                { onSubmit: this.handleSubmit },
+	                React.createElement(
+	                    'div',
+	                    { className: 'ui left icon input' },
+	                    React.createElement('input', { name: 'limit', placeholder: 'Cards (Below 100)', type: 'text', value: this.state.limit, onChange: this.handleLimitChange }),
+	                    React.createElement('i', { className: 'filter icon' })
+	                )
 	            )
 	        );
 	    }
@@ -30649,7 +30671,7 @@
 
 
 	// module
-	exports.push([module.id, "/* Spinner */\n\n#spin {\n  position:fixed;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n\n\n  width: 100%;\n  height: 100%;\n  z-index: 1;\n}\n\n.spinner {\n  width: 40px;\n  height: 40px;\n\n  position: relative;\n}\n\n.double-bounce1, .double-bounce2 {\n  width: 100%;\n  height: 100%;\n  border-radius: 50%;\n  background-color: #333;\n  opacity: 0.6;\n  position: absolute;\n  top: 0;\n  left: 0;\n  \n  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;\n  animation: sk-bounce 2.0s infinite ease-in-out;\n}\n\n.double-bounce2 {\n  -webkit-animation-delay: -1.0s;\n  animation-delay: -1.0s;\n}\n\n@-webkit-keyframes sk-bounce {\n  0%, 100% { -webkit-transform: scale(0.0) }\n  50% { -webkit-transform: scale(1.0) }\n}\n\n@keyframes sk-bounce {\n  0%, 100% { \n    transform: scale(0.0);\n    -webkit-transform: scale(0.0);\n  } 50% { \n    transform: scale(1.0);\n    -webkit-transform: scale(1.0);\n  }\n}\n\n/* SearchBox */\n\n#search {\n  position: fixed;\n  right: 0.3em;\n  bottom: 0.5em;\n  z-index: 1;\n\n  width: 16em;\n}", ""]);
+	exports.push([module.id, "/* Spinner */\n\n#spin {\n  position:fixed;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n\n\n  width: 100%;\n  height: 100%;\n  z-index: 1;\n}\n\n.spinner {\n  width: 40px;\n  height: 40px;\n\n  position: relative;\n}\n\n.double-bounce1, .double-bounce2 {\n  width: 100%;\n  height: 100%;\n  border-radius: 50%;\n  background-color: #333;\n  opacity: 0.6;\n  position: absolute;\n  top: 0;\n  left: 0;\n  \n  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;\n  animation: sk-bounce 2.0s infinite ease-in-out;\n}\n\n.double-bounce2 {\n  -webkit-animation-delay: -1.0s;\n  animation-delay: -1.0s;\n}\n\n@-webkit-keyframes sk-bounce {\n  0%, 100% { -webkit-transform: scale(0.0) }\n  50% { -webkit-transform: scale(1.0) }\n}\n\n@keyframes sk-bounce {\n  0%, 100% { \n    transform: scale(0.0);\n    -webkit-transform: scale(0.0);\n  } 50% { \n    transform: scale(1.0);\n    -webkit-transform: scale(1.0);\n  }\n}\n\n/* ControlBox */\n\n#control {\n  position: fixed;\n  right: 0.2em;\n  bottom: 0.5em;\n  z-index: 1;\n\n  width: 17em;\n\n  opacity: 0.5;\n  transition: opacity, 0.5s, linear;\n}\n\n#control > form > div.input {\n  width: 100%;\n}\n\n#control:hover {\n  opacity: 1;\n}", ""]);
 
 	// exports
 
