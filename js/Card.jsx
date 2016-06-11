@@ -31,7 +31,7 @@ var Card = React.createClass({
         )
     },
 
-    componentDidMount() {
+    componentDidMount: function() {
         this.props.didMount()
     }
 })
