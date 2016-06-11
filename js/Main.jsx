@@ -1,14 +1,18 @@
-// Require Libraries
+// Import Libraries
 var React = require('react');
 var ReactDOM = require('react-dom');
 var $ = require('jquery');
 
-// Require Assets
+// Import Assets
 require('semantic-ui/dist/semantic.min.css')
 require('../css/style.css')
-var noImage = require('../reddit.jpg')
 
-// Require 
+
+// Import Modules
+var Card = require('./Card.jsx')
+var ControlBox = require('./ControlBox.jsx')
+var Spinner = require('./Spinner.jsx')
+
 
 var Main = React.createClass({
 
@@ -104,129 +108,6 @@ var Main = React.createClass({
     }
 
 
-})
-
-var Card = React.createClass({
-
-    render: function() {
-        return (
-
-            <div>
-              { this.props.data.map(function(arg) {
-                
-                    if (!arg.data.preview) {
-                        var imgURL = noImage
-                    } else {
-                        var imgURL = arg.data.preview.images[0].source.url
-                    }
-                
-                    var titleURL = arg.data.url
-                    var title = arg.data.title
-                    var date = new Date(arg.data.created_utc).toTimeString()
-                
-                    return (
-                        <div className="ui fluid card">
-                          <CardImage imgURL={ imgURL } />
-                          <CardContent title={ title } titleURL={ titleURL } date={ date } />
-                        </div>
-                    )
-                }) }
-            </div>
-        )
-    },
-
-    componentDidMount() {
-        this.props.didMount()
-    }
-})
-
-var CardImage = React.createClass({
-
-    render: function() {
-        return (<a className="image" href={ this.props.imgURL }><img src={ this.props.imgURL } />
-                </a>)
-    }
-
-})
-
-var CardContent = React.createClass({
-
-    render: function() {
-        return (<div className="content">
-                  <a className="header" href={ this.props.titleURL }>
-                    { this.props.title }
-                  </a>
-                  <div className="meta">
-                    <span className="date">{ this.props.date }</span>
-                  </div>
-                </div>)
-    }
-})
-
-var ControlBox = React.createClass({
-
-    getInitialState: function() {
-        return ({
-            subreddit: this.props.subreddit,
-            limit: this.props.limit
-        })
-    },
-
-    handleSubmit: function(event) {
-        event.preventDefault()
-        this.props.onSubmit(this.state.subreddit, this.state.limit)
-    },
-
-    handleSubredditChange: function(event) {
-        this.setState({
-            subreddit: event.target.value.trim()
-        })
-    },
-
-    handleLimitChange: function(event) {
-        this.setState({
-            limit: event.target.value.trim()
-        })
-    },
-
-    render: function() {
-        return (<div id="control" className="ui segment">
-                  <form onSubmit={ this.handleSubmit }>
-                    <div className="ui left icon input">
-                      <input name="subreddit" placeholder="Goto Subreddit..." type="text" value={ this.state.subreddit } onChange={ this.handleSubredditChange } />
-                      <i className="reddit square icon"></i>
-                    </div>
-                  </form>
-                  <form onSubmit={ this.handleSubmit }>
-                    <div className="ui left icon input">
-                      <input name="limit" placeholder="Cards (Below 100)" type="text" value={ this.state.limit } onChange={ this.handleLimitChange } />
-                      <i className="filter icon"></i>
-                    </div>
-                  </form>
-                </div>
-
-        )
-    }
-})
-
-var Spinner = React.createClass({
-
-    render: function() {
-
-        if (this.props.display == true) {
-            return (
-                <div id="spin">
-                  <div className="spinner">
-                    <div className="double-bounce1" />
-                    <div className="double-bounce2" />
-                  </div>
-                </div>
-            )
-        } else {
-            return null
-        }
-
-    }
 })
 
 ReactDOM.render(<Main />, document.getElementById('content'));
