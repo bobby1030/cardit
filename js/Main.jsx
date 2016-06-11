@@ -1,9 +1,14 @@
+// Require Libraries
 var React = require('react');
 var ReactDOM = require('react-dom');
 var $ = require('jquery');
+
+// Require Assets
 require('semantic-ui/dist/semantic.min.css')
 require('../css/style.css')
 var noImage = require('../reddit.jpg')
+
+// Require 
 
 var Main = React.createClass({
 
@@ -40,7 +45,7 @@ var Main = React.createClass({
         console.log('Spinner Stopped')
     },
 
-    componentWillMount() {
+    componentWillMount: function() {
         this.fetchSubredditData(this.state.subreddit, this.state.subredditLimit)
     },
 
@@ -103,7 +108,7 @@ var Main = React.createClass({
 
 var Card = React.createClass({
 
-    render() {
+    render: function() {
         return (
 
             <div>
@@ -137,7 +142,7 @@ var Card = React.createClass({
 
 var CardImage = React.createClass({
 
-    render() {
+    render: function() {
         return (<a className="image" href={ this.props.imgURL }><img src={ this.props.imgURL } />
                 </a>)
     }
@@ -146,7 +151,7 @@ var CardImage = React.createClass({
 
 var CardContent = React.createClass({
 
-    render() {
+    render: function() {
         return (<div className="content">
                   <a className="header" href={ this.props.titleURL }>
                     { this.props.title }
