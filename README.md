@@ -11,7 +11,8 @@
 Just visit [here](http://cardit.bobbyrealms.info/) and enjoy it!
 
 ## 開發環境 Development
-```
+
+```shell
 npm install 
 # install dependencies
 
