@@ -15,16 +15,25 @@ var Spinner = require('./Spinner.jsx')
 
 
 var Main = React.createClass({
+    loadLocalStorage: function(key) {
+        if (localStorage.state != null && localStorage.state != 'undefined') {
+            var state = JSON.parse(localStorage.state)
+            return state[key]
+        } else {
+            return false
+        }
+    },
 
     getInitialState: function() {
 
         return ({
-            subreddit: '',
-            subredditLimit: 25,
-            spinnerDisplay: true,
+            subreddit: this.loadLocalStorage('subreddit') || '',
+            subredditLimit: this.loadLocalStorage('subredditLimit') || 25,
+            spinnerDisplay: this.loadLocalStorage('spinnerDisplay') || true,
             subredditData: null
         });
     },
+
 
     controlOnSubmit: function(subreddit, limit) {
         this.setState({
@@ -51,6 +60,10 @@ var Main = React.createClass({
 
     componentWillMount: function() {
         this.fetchSubredditData(this.state.subreddit, this.state.subredditLimit)
+    },
+
+    componentDidUpdate: function() {
+        localStorage.state = JSON.stringify(this.state);
     },
 
     fetchSubredditData: function(subreddit, limit) {
