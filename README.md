@@ -6,6 +6,7 @@
 * 大圖顯示 | Make pictures HUGE
 * 	對圖多的 Subreddit 很有用 | Useful for image-sharing Subreddits
 * 快速切換 Subreddit | Switch between Subreddits without reloading page 
+* 自動記憶最後造訪的 Subreddit 及選項 | Auto memorize last visited Subreddit & configs 
 
 ## 使用 Usage
 Just visit [here](http://cardit.bobbyrealms.info/) and enjoy it!
