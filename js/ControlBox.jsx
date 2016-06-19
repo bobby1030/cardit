@@ -1,14 +1,7 @@
 var React = require('react')
 
 var ControlBox = React.createClass({
-
-    getInitialState: function() {
-        return ({
-            subreddit: this.props.subreddit,
-            limit: this.props.limit
-        })
-    },
-
+    
     handleSubmit: function(event) {
         event.preventDefault()
         this.props.onSubmit(this.state.subreddit, this.state.limit)
@@ -23,6 +16,13 @@ var ControlBox = React.createClass({
     handleLimitChange: function(event) {
         this.setState({
             limit: event.target.value.trim()
+        })
+    },
+
+    getInitialState: function() {
+        return ({
+            subreddit: this.props.subreddit,
+            limit: this.props.limit
         })
     },
 

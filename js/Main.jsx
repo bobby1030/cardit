@@ -7,7 +7,6 @@ var $ = require('jquery');
 require('semantic-ui/dist/semantic.min.css')
 require('../css/style.css')
 
-
 // Import Modules
 var Card = require('./Card.jsx')
 var ControlBox = require('./ControlBox.jsx')
@@ -15,6 +14,7 @@ var Spinner = require('./Spinner.jsx')
 
 
 var Main = React.createClass({
+
     loadLocalStorage: function(key) {
         if (localStorage.state != null && localStorage.state != 'undefined') {
             var state = JSON.parse(localStorage.state)
@@ -24,18 +24,7 @@ var Main = React.createClass({
         }
     },
 
-    getInitialState: function() {
-
-        return ({
-            subreddit: this.loadLocalStorage('subreddit') || '',
-            subredditLimit: this.loadLocalStorage('subredditLimit') || 25,
-            spinnerDisplay: this.loadLocalStorage('spinnerDisplay') || true,
-            subredditData: null
-        });
-    },
-
-
-    controlOnSubmit: function(subreddit, limit) {
+    handleControlBoxSubmit: function(subreddit, limit) {
         this.setState({
             subreddit: subreddit,
             subredditLimit: limit
@@ -58,18 +47,10 @@ var Main = React.createClass({
         console.log('Spinner Stopped')
     },
 
-    componentWillMount: function() {
-        this.fetchSubredditData(this.state.subreddit, this.state.subredditLimit)
-    },
-
-    componentDidUpdate: function() {
-        localStorage.state = JSON.stringify(this.state);
-    },
-
     fetchSubredditData: function(subreddit, limit) {
         var parent = this
-
         this.startSpinner()
+
         console.log('Gonna Fetch:' + subreddit)
         if (subreddit.length > 0) {
             $.getJSON('http://www.reddit.com/r/' + subreddit + '/new.json?' + 'limit=' + limit, function(res) {
@@ -96,12 +77,26 @@ var Main = React.createClass({
                     parent.stopSpinner()
                 });
         }
+    },
 
+    getInitialState: function() {
+        return ({
+            subreddit: this.loadLocalStorage('subreddit') || '',
+            subredditLimit: this.loadLocalStorage('subredditLimit') || 25,
+            spinnerDisplay: this.loadLocalStorage('spinnerDisplay') || true,
+            subredditData: null
+        });
+    },
 
+    componentWillMount: function() {
+        this.fetchSubredditData(this.state.subreddit, this.state.subredditLimit)
+    },
+
+    componentDidUpdate: function() {
+        localStorage.state = JSON.stringify(this.state);
     },
 
     render: function() {
-
         var renderCard;
         if (this.state.subredditData != null) {
             renderCard = <Card data={ this.state.subredditData } didMount={ this.stopSpinner } />
@@ -115,7 +110,7 @@ var Main = React.createClass({
                   { renderCard }
                 </div>
               </div>
-              <ControlBox subreddit={ this.state.subreddit } limit={ this.state.subredditLimit } onSubmit={ this.controlOnSubmit } />
+              <ControlBox subreddit={ this.state.subreddit } limit={ this.state.subredditLimit } onSubmit={ this.handleControlBoxSubmit } />
             </div>
             );
     }
