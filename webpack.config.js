@@ -4,7 +4,7 @@ var path = require('path');
 module.exports = {
     entry: ['./js/Main.jsx'],
     output: {
-        path: './dist',
+        path: __dirname + '/dist',
         publicPath: '/',
         filename: 'build.js'
     },
