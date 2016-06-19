@@ -48,7 +48,7 @@ var Main = React.createClass({
     },
 
     fetchSubredditData: function(subreddit, limit) {
-        var parent = this
+        var parent = this // Fuck jQuery's 'this' conflict 
         this.startSpinner()
 
         console.log('Gonna Fetch:' + subreddit)
