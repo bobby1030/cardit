@@ -17,8 +17,9 @@ var Card = React.createClass({
                         var imgURL = arg.data.preview.images[0].source.url
                     }
                 
-                    var titleURL = arg.data.url
+                    var linkURL = arg.data.url
                     var title = arg.data.title
+                    var postURL = 'https://reddit.com' + arg.data.permalink
                 
                     moment.locale(navigator.language.toLowerCase())
                     var dateRelative = moment.unix(arg.data.created_utc).fromNow()
@@ -27,8 +28,8 @@ var Card = React.createClass({
                 
                     return (
                         <div className="ui fluid card">
-                          <CardImage imgURL={ imgURL } />
-                          <CardContent title={ title } titleURL={ titleURL } dateRelative={ dateRelative } dateAbsolute={ dateAbsolute } />
+                          <CardImage imgURL={ imgURL } linkURL={ linkURL }/>
+                          <CardContent title={ title } postURL={ postURL } dateRelative={ dateRelative } dateAbsolute={ dateAbsolute } />
                         </div>
                     )
                 }) }
