@@ -19,7 +19,7 @@ var Card = React.createClass({
                 
                     var linkURL = arg.data.url
                     var title = arg.data.title
-                    var postURL = 'https://reddit.com' + arg.data.permalink
+                    var postURL = 'https://www.reddit.com' + arg.data.permalink
                 
                     moment.locale(navigator.language.toLowerCase())
                     var dateRelative = moment.unix(arg.data.created_utc).fromNow()
