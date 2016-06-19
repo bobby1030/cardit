@@ -8,7 +8,7 @@ var CardContent = React.createClass({
                     { this.props.title }
                   </a>
                   <div className="meta">
-                    <span className="date">{ this.props.date }</span>
+                    <span className="date" title={ this.props.dateAbsolute }>{ this.props.dateRelative }</span>
                   </div>
                 </div>)
     }

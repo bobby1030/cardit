@@ -1,4 +1,5 @@
 var React = require('react')
+var moment = require('moment')
 var CardImage = require('./CardImage.jsx')
 var CardContent = require('./CardContent.jsx')
 var noImage = require('../reddit.jpg')
@@ -18,12 +19,16 @@ var Card = React.createClass({
                 
                     var titleURL = arg.data.url
                     var title = arg.data.title
-                    var date = new Date(arg.data.created_utc).toTimeString()
+                
+                    moment.locale(navigator.language.toLowerCase())
+                    var dateRelative = moment.unix(arg.data.created_utc).fromNow()
+                    var dateAbsolute = moment.unix(arg.data.created_utc).format('lll')
+                    // var date new Date(arg.data.created_utc).toTimeString()
                 
                     return (
                         <div className="ui fluid card">
                           <CardImage imgURL={ imgURL } />
-                          <CardContent title={ title } titleURL={ titleURL } date={ date } />
+                          <CardContent title={ title } titleURL={ titleURL } dateRelative={ dateRelative } dateAbsolute={ dateAbsolute } />
                         </div>
                     )
                 }) }
