@@ -90,7 +90,7 @@ var Main = React.createClass({
         return ({
             subreddit: this.loadLocalStorage('subreddit') || '',
             subredditLimit: this.loadLocalStorage('subredditLimit') || 25,
-            spinnerDisplay: this.loadLocalStorage('spinnerDisplay') || true,
+            spinnerDisplay: true,
             subredditData: [],
             lastRedditPostID: null
         });
@@ -107,7 +107,7 @@ var Main = React.createClass({
     render: function() {
         var renderCard;
         if (this.state.subredditData != []) {
-            renderCard = <Card data={ this.state.subredditData } didMount={ this.stopSpinner } loadMore={ this.loadMoreHandler } />
+            renderCard = <Card data={ this.state.subredditData } loadMore={ this.loadMoreHandler } />
         }
 
         return (

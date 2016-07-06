@@ -36,10 +36,6 @@ var Card = React.createClass({
               <button className="ui fluid huge button" onClick={this.props.loadMore}>Give Me More!</button>
             </div>
         )
-    },
-
-    componentDidMount: function() {
-        this.props.didMount()
     }
 })
 
