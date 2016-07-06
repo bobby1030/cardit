@@ -53,24 +53,25 @@
   }
 }
 
-/* ControlBox */
-
-#control {
-  position: fixed;
-  right: 0.2em;
-  bottom: 0.5em;
-  z-index: 1;
-
-  width: 17em;
-
-  opacity: 0.5;
-  transition: opacity, 0.5s, linear;
+/* Menu */
+div.ui.menu > .header, div.ui.menu > a {
+  font-size: 1.6em;
 }
 
-#control > form > div.input {
-  width: 100%;
+div.ui.menu > .item > form {
+  margin: auto 0.3em auto 0.3em;
 }
 
-#control:hover {
-  opacity: 1;
+div.ui.menu > .item > form > div > input {
+  width: 75%;
+}
+
+#card-container {
+  margin-top: 2.5em;
+}
+
+@media (max-width: 767px) {
+  #card-container {
+    margin-top: 9em;
+  }
 }

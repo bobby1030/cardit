@@ -8,7 +8,7 @@ var Card = React.createClass({
 
     render: function() {
         return (
-            <div id="main">
+            <div id="card-container">
               { this.props.data.map(function(arg) {
                 
                     if (!arg.data.preview) {

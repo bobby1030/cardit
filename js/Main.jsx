@@ -9,7 +9,7 @@ require('../css/style.css')
 
 // Import Modules
 var Card = require('./Card.jsx')
-var ControlBox = require('./ControlBox.jsx')
+var Menu = require('./Menu.jsx')
 var Spinner = require('./Spinner.jsx')
 
 
@@ -24,7 +24,7 @@ var Main = React.createClass({
         }
     },
 
-    handleControlBoxSubmit: function(subreddit, limit) {
+    handleMenuSubmit: function(subreddit, limit) {
         this.setState({
             subreddit: subreddit,
             subredditLimit: limit,
@@ -114,12 +114,12 @@ var Main = React.createClass({
         return (
             <div>
               <Spinner display={ this.state.spinnerDisplay } />
+              <Menu subreddit={ this.state.subreddit } limit={ this.state.subredditLimit } onSubmit={ this.handleMenuSubmit } />
               <div className="ui centered stackable grid">
                 <div className="twelve wide column">
                   { renderCard }
                 </div>
               </div>
-              <ControlBox subreddit={ this.state.subreddit } limit={ this.state.subredditLimit } onSubmit={ this.handleControlBoxSubmit } />
             </div>
             );
     }
