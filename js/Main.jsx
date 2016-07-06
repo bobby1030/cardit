@@ -27,7 +27,8 @@ var Main = React.createClass({
     handleControlBoxSubmit: function(subreddit, limit) {
         this.setState({
             subreddit: subreddit,
-            subredditLimit: limit
+            subredditLimit: limit,
+            subredditData: [] // Clear Subreddit Data to prevent different Subreddit concatenation
         })
 
         this.fetchSubredditData(subreddit, limit)
