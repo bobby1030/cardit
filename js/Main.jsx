@@ -30,7 +30,7 @@ var Main = React.createClass({
             subredditLimit: limit
         })
 
-        this.fetchSubredditData(subreddit, limit, this.state.lastRedditPostID)
+        this.fetchSubredditData(subreddit, limit)
     },
 
     startSpinner: function() {
