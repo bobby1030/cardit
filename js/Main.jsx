@@ -89,7 +89,7 @@ var Main = React.createClass({
     getInitialState: function() {
         return ({
             subreddit: this.loadLocalStorage('subreddit') || '',
-            subredditLimit: this.loadLocalStorage('subredditLimit') || 25,
+            subredditLimit: this.loadLocalStorage('subredditLimit') || 5,
             spinnerDisplay: true,
             subredditData: [],
             lastRedditPostID: null
