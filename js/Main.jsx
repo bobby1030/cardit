@@ -47,15 +47,21 @@ var Main = React.createClass({
         console.log('Spinner Stopped')
     },
 
-    fetchSubredditData: function(subreddit, limit) {
+    loadMoreHandler: function() {
+        this.fetchSubredditData(this.state.subreddit, this.state.subredditLimit, this.state.lastRedditPostID)
+    },
+
+    fetchSubredditData: function(subreddit, limit, after) {
         var parent = this // Fuck jQuery's 'this' conflict 
         this.startSpinner()
 
         console.log('Gonna Fetch:' + subreddit)
+
         if (subreddit.length > 0) {
-            $.getJSON('http://www.reddit.com/r/' + subreddit + '/new.json?' + 'limit=' + limit, function(res) {
+            $.getJSON('http://www.reddit.com/r/' + subreddit + '/new.json?' + 'limit=' + limit + '&after=' + after, function(res) {
                 parent.setState({
-                    subredditData: res.data.children
+                    subredditData: parent.state.subredditData.concat(res.data.children),
+                    lastRedditPostID: res.data.children[res.data.children.length - 1].data.name
                 })
                 console.log('Fetch Success')
                 parent.stopSpinner()
@@ -65,9 +71,10 @@ var Main = React.createClass({
                     parent.stopSpinner()
                 }); // If error, redirect to homepage
         } else {
-            $.getJSON('http://www.reddit.com/new.json?' + 'limit=' + limit, function(res) {
+            $.getJSON('http://www.reddit.com/new.json?' + 'limit=' + limit + '&after=' + after, function(res) {
                 parent.setState({
-                    subredditData: res.data.children
+                    subredditData: parent.state.subredditData.concat(res.data.children),
+                    lastRedditPostID: res.data.children[res.data.children.length - 1].data.name
                 })
                 console.log('Fetch Home Success')
                 parent.stopSpinner()
@@ -84,7 +91,8 @@ var Main = React.createClass({
             subreddit: this.loadLocalStorage('subreddit') || '',
             subredditLimit: this.loadLocalStorage('subredditLimit') || 25,
             spinnerDisplay: this.loadLocalStorage('spinnerDisplay') || true,
-            subredditData: null
+            subredditData: [],
+            lastRedditPostID: null
         });
     },
 
@@ -98,8 +106,8 @@ var Main = React.createClass({
 
     render: function() {
         var renderCard;
-        if (this.state.subredditData != null) {
-            renderCard = <Card data={ this.state.subredditData } didMount={ this.stopSpinner } />
+        if (this.state.subredditData != []) {
+            renderCard = <Card data={ this.state.subredditData } didMount={ this.stopSpinner } loadMore={ this.loadMoreHandler } />
         }
 
         return (

@@ -8,7 +8,7 @@ var Card = React.createClass({
 
     render: function() {
         return (
-            <div>
+            <div id="main">
               { this.props.data.map(function(arg) {
                 
                     if (!arg.data.preview) {
@@ -33,6 +33,7 @@ var Card = React.createClass({
                         </div>
                     )
                 }) }
+              <p onClick={this.props.loadMore}>Loadmore</p>
             </div>
         )
     },
