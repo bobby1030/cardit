@@ -30,7 +30,7 @@ var Main = React.createClass({
             subredditLimit: limit
         })
 
-        this.fetchSubredditData(subreddit, limit)
+        this.fetchSubredditData(subreddit, limit, this.state.lastRedditPostID)
     },
 
     startSpinner: function() {
@@ -97,7 +97,7 @@ var Main = React.createClass({
     },
 
     componentWillMount: function() {
-        this.fetchSubredditData(this.state.subreddit, this.state.subredditLimit)
+        this.fetchSubredditData(this.state.subreddit, this.state.subredditLimit, this.state.lastRedditPostID)
     },
 
     componentDidUpdate: function() {
