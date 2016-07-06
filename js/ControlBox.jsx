@@ -36,7 +36,7 @@ var ControlBox = React.createClass({
                   </form>
                   <form onSubmit={ this.handleSubmit }>
                     <div className="ui left icon input">
-                      <input name="limit" placeholder="Cards (Below 100)" type="text" value={ this.state.limit } onChange={ this.handleLimitChange } />
+                      <input name="limit" placeholder="Load cards per request" type="text" value={ this.state.limit } onChange={ this.handleLimitChange } />
                       <i className="filter icon"></i>
                     </div>
                   </form>
