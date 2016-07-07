@@ -70,8 +70,12 @@ div.ui.menu > .item > form > div > input {
   margin-top: 2.5em;
 }
 
-@media (max-width: 767px) {
+@media only screen and (max-width: 767px) {
   #card-container {
     margin-top: 9em;
+  }
+
+  .mobile-hide {
+    display: none !important;
   }
 }

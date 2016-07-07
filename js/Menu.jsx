@@ -44,7 +44,7 @@ var Menu = React.createClass({
                   </div>
                 </form>
               </div>
-                <a href="https://github.com/bobby1030/cardit" className="ui item">
+                <a href="https://github.com/bobby1030/cardit" className="ui item mobile-hide">
                   <i className="github icon"></i>
                   GitHub Repo
                 </a>
