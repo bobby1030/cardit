@@ -4,7 +4,7 @@ var ReactDOM = require('react-dom');
 var $ = require('jquery');
 
 // Import Assets
-require('semantic-ui/dist/semantic.min.css')
+require('../css/semantic/dist/semantic.min.css')
 require('../css/style.css')
 
 // Import Modules
