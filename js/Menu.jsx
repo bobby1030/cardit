@@ -70,7 +70,7 @@ var Menu = React.createClass({
                 hasScrolled();
                 didScroll = false;
             }
-        }, 250);
+        }, 100);
 
         function hasScrolled() {
             var st = $(this).scrollTop();
