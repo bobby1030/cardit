@@ -33,7 +33,7 @@ var Card = React.createClass({
                         </div>
                     )
                 }) }
-              <button className="ui fluid huge button" onClick={this.props.loadMore}>Give Me More!</button>
+              <button className="ui fluid huge blue basic button" onClick={this.props.loadMore}>Give Me More!</button>
             </div>
         )
     }
