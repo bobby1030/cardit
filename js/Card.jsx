@@ -10,13 +10,8 @@ var Card = React.createClass({
         return (
             <div id="card-container">
               { this.props.data.map(function(arg) {
-                
-                    if (!arg.data.preview) {
-                        var imgURL = noImage
-                    } else {
-                        var imgURL = arg.data.preview.images[0].source.url
-                    }
-                
+
+                    var imgURL = (arg.data.preview ? arg.data.preview.images[0].source.url : noImage)
                     var linkURL = arg.data.url
                     var title = arg.data.title
                     var postURL = 'https://www.reddit.com' + arg.data.permalink
@@ -38,6 +33,5 @@ var Card = React.createClass({
         )
     }
 })
-
 
 module.exports = Card;
