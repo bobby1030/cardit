@@ -59,7 +59,13 @@ var Main = React.createClass({
         console.log('Gonna Fetch:' + subreddit)
 
         if (subreddit.length > 0) {
-            $.getJSON('http://www.reddit.com/r/' + subreddit + '/new.json?' + 'limit=' + limit + '&after=' + after, function(res) {
+            var url = 'http://www.reddit.com/r/' + subreddit + '/new.json?' + 'limit=' + limit + '&after=' + after
+        } else {
+            var url = 'http://www.reddit.com/new.json?' + 'limit=' + limit + '&after=' + after
+        }
+        
+        $.getJSON(url)
+            .done(function(res) {
                 parent.setState({
                     subredditData: parent.state.subredditData.concat(res.data.children),
                     lastRedditPostID: res.data.children[res.data.children.length - 1].data.name
@@ -67,24 +73,10 @@ var Main = React.createClass({
                 console.log('Fetch Success')
                 parent.stopSpinner()
             }) // Fetch subreddit data
-                .error(function() {
-                    console.log("404: Cannot Found The Subreddit: " + subreddit);
-                    parent.stopSpinner()
-                }); // If error, redirect to homepage
-        } else {
-            $.getJSON('http://www.reddit.com/new.json?' + 'limit=' + limit + '&after=' + after, function(res) {
-                parent.setState({
-                    subredditData: parent.state.subredditData.concat(res.data.children),
-                    lastRedditPostID: res.data.children[res.data.children.length - 1].data.name
-                })
-                console.log('Fetch Home Success')
+            .error(function() {
+                console.log("404: Cannot Found The Subreddit: " + subreddit);
                 parent.stopSpinner()
-            }) // If no subreddit given, fetch reddit homepage.  
-                .error(function() {
-                    console.log("404: Cannot Connect To Reddit");
-                    parent.stopSpinner()
-                });
-        }
+            });
     },
 
     getInitialState: function() {
