@@ -53,7 +53,7 @@ var Main = React.createClass({
     },
 
     fetchSubredditData: function(subreddit, limit, after) {
-        var parent = this // Fuck jQuery's 'this' conflict 
+        var parent = this // Fuck jQuery's 'this' conflict
         this.startSpinner()
 
         console.log('Gonna Fetch:' + subreddit)
@@ -63,7 +63,7 @@ var Main = React.createClass({
         } else {
             var url = 'http://www.reddit.com/new.json?' + 'limit=' + limit + '&after=' + after
         }
-        
+
         $.getJSON(url)
             .done(function(res) {
                 parent.setState({

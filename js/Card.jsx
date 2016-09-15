@@ -15,12 +15,12 @@ var Card = React.createClass({
                     var linkURL = arg.data.url
                     var title = arg.data.title
                     var postURL = 'https://www.reddit.com' + arg.data.permalink
-                
+
                     moment.locale(navigator.language.toLowerCase())
                     var dateRelative = moment.unix(arg.data.created_utc).fromNow()
                     var dateAbsolute = moment.unix(arg.data.created_utc).format('lll')
                     // var date new Date(arg.data.created_utc).toTimeString()
-                
+
                     return (
                         <div className="ui fluid card">
                           <CardImage imgURL={ imgURL } linkURL={ linkURL }/>
