@@ -4,7 +4,7 @@ var Spinner = React.createClass({
 
     render: function() {
 
-        if (this.props.display == true) {
+        if (this.props.display === true) {
             return (
                 <div id="spin">
                   <div className="spinner">
@@ -12,12 +12,12 @@ var Spinner = React.createClass({
                     <div className="double-bounce2" />
                   </div>
                 </div>
-            )
+            );
         } else {
-            return null
+            return null;
         }
 
     }
-})
+});
 
 module.exports = Spinner;

@@ -1,31 +1,30 @@
-var React = require('react')
-var $ = require('jquery')
-var Headroom = require('react-headroom').default
+var React = require('react');
+var Headroom = require('react-headroom').default;
 
 var Menu = React.createClass({
 
     handleSubmit: function(event) {
-        event.preventDefault()
-        this.props.onSubmit(this.state.subreddit, this.state.limit)
+        event.preventDefault();
+        this.props.onSubmit(this.state.subreddit, this.state.limit);
     },
 
     handleSubredditChange: function(event) {
         this.setState({
             subreddit: event.target.value.trim()
-        })
+        });
     },
 
     handleLimitChange: function(event) {
         this.setState({
             limit: event.target.value.trim()
-        })
+        });
     },
 
     getInitialState: function() {
         return ({
             subreddit: this.props.subreddit,
             limit: this.props.limit
-        })
+        });
     },
 
     render: function() {
@@ -54,8 +53,8 @@ var Menu = React.createClass({
                 </div>
               </Headroom>
             </nav>
-        )
+        );
     }
-})
+});
 
 module.exports = Menu;

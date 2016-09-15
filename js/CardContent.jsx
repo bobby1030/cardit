@@ -1,4 +1,4 @@
-var React = require('react')
+var React = require('react');
 
 var CardContent = React.createClass({
 
@@ -10,8 +10,8 @@ var CardContent = React.createClass({
                   <div className="meta">
                     <span className="date" title={ this.props.dateAbsolute }>{ this.props.dateRelative }</span>
                   </div>
-                </div>)
+                </div>);
     }
-})
+});
 
 module.exports = CardContent;

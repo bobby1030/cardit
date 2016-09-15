@@ -13,7 +13,8 @@ module.exports = {
         }
     },
     "plugins": [
-        "react"
+        "react",
+        "node"
     ],
     "rules": {
         "accessor-pairs": "error",
@@ -200,7 +201,7 @@ module.exports = {
         "radix": "error",
         "require-jsdoc": "error",
         "rest-spread-spacing": "error",
-        "semi": "off",
+        "semi": "warn",
         "semi-spacing": "error",
         "sort-imports": "error",
         "sort-vars": "error",

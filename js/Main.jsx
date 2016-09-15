@@ -4,23 +4,23 @@ var ReactDOM = require('react-dom');
 var $ = require('jquery');
 
 // Import Assets
-require('../css/semantic/dist/semantic.min.css')
-require('../css/style.css')
+require('../css/semantic/dist/semantic.min.css');
+require('../css/style.css');
 
 // Import Modules
-var Card = require('./Card.jsx')
-var Menu = require('./Menu.jsx')
-var Spinner = require('./Spinner.jsx')
+var Card = require('./Card.jsx');
+var Menu = require('./Menu.jsx');
+var Spinner = require('./Spinner.jsx');
 
 
 var Main = React.createClass({
 
     loadLocalStorage: function(key) {
         if (localStorage.state != null && localStorage.state != 'undefined') {
-            var state = JSON.parse(localStorage.state)
-            return state[key]
+            var state = JSON.parse(localStorage.state);
+            return state[key];
         } else {
-            return false
+            return false;
         }
     },
 
@@ -29,39 +29,39 @@ var Main = React.createClass({
             subreddit: subreddit,
             subredditLimit: limit,
             subredditData: [] // Clear Subreddit Data to prevent different Subreddit concatenation
-        })
+        });
 
-        this.fetchSubredditData(subreddit, limit)
+        this.fetchSubredditData(subreddit, limit);
     },
 
     startSpinner: function() {
         this.setState({
             spinnerDisplay: true
-        })
-        console.log('Spinner Started')
+        });
+        console.log('Spinner Started');
     },
 
     stopSpinner: function() {
         this.setState({
             spinnerDisplay: false
-        })
-        console.log('Spinner Stopped')
+        });
+        console.log('Spinner Stopped');
     },
 
     loadMoreHandler: function() {
-        this.fetchSubredditData(this.state.subreddit, this.state.subredditLimit, this.state.lastRedditPostID)
+        this.fetchSubredditData(this.state.subreddit, this.state.subredditLimit, this.state.lastRedditPostID);
     },
 
     fetchSubredditData: function(subreddit, limit, after) {
         var parent = this // Fuck jQuery's 'this' conflict
-        this.startSpinner()
+        this.startSpinner();
 
-        console.log('Gonna Fetch:' + subreddit)
+        console.log('Gonna Fetch:' + subreddit);
 
         if (subreddit.length > 0) {
-            var url = 'http://www.reddit.com/r/' + subreddit + '/new.json?' + 'limit=' + limit + '&after=' + after
+            var url = 'http://www.reddit.com/r/' + subreddit + '/new.json?' + 'limit=' + limit + '&after=' + after;
         } else {
-            var url = 'http://www.reddit.com/new.json?' + 'limit=' + limit + '&after=' + after
+            var url = 'http://www.reddit.com/new.json?' + 'limit=' + limit + '&after=' + after;
         }
 
         $.getJSON(url)
@@ -69,13 +69,13 @@ var Main = React.createClass({
                 parent.setState({
                     subredditData: parent.state.subredditData.concat(res.data.children),
                     lastRedditPostID: res.data.children[res.data.children.length - 1].data.name
-                })
-                console.log('Fetch Success')
-                parent.stopSpinner()
+                });
+                console.log('Fetch Success');
+                parent.stopSpinner();
             }) // Fetch subreddit data
             .error(function() {
                 console.log("404: Cannot Found The Subreddit: " + subreddit);
-                parent.stopSpinner()
+                parent.stopSpinner();
             });
     },
 
@@ -90,7 +90,7 @@ var Main = React.createClass({
     },
 
     componentWillMount: function() {
-        this.fetchSubredditData(this.state.subreddit, this.state.subredditLimit, this.state.lastRedditPostID)
+        this.fetchSubredditData(this.state.subreddit, this.state.subredditLimit, this.state.lastRedditPostID);
     },
 
     componentDidUpdate: function() {
@@ -99,8 +99,8 @@ var Main = React.createClass({
 
     render: function() {
         var renderCard;
-        if (this.state.subredditData != []) {
-            renderCard = <Card data={ this.state.subredditData } loadMore={ this.loadMoreHandler } />
+        if (this.state.subredditData !== []) {
+            renderCard = <Card data={ this.state.subredditData } loadMore={ this.loadMoreHandler } />;
         }
 
         return (
@@ -117,6 +117,6 @@ var Main = React.createClass({
     }
 
 
-})
+});
 
 ReactDOM.render(<Main />, document.getElementById('content'));
