@@ -5,7 +5,7 @@ var webpack = require('webpack-stream');
 var path = {js: './dist/build.js', all: './dist/**/*', dest: './dist/'}
 
 gulp.task('build', function(){
-	return gulp.src('./js/Main.jsx')
+	return gulp.src('./src/Main.jsx')
 		.pipe(webpack(require('./webpack.config.js')))
 		.pipe(gulp.dest(path.dest))
 })
