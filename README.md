@@ -9,7 +9,7 @@
 * 自動記憶最後造訪的 Subreddit 及選項 | Auto memorize last visited Subreddit & configs 
 
 ## 使用 Usage
-Just visit [here](http://cardit.bobbyrealms.info/) and enjoy it!
+Just visit [here](http://cardit.bobbyho.me/) and enjoy it!
 
 ## 開發環境 Development
 
