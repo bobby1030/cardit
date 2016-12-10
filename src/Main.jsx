@@ -59,9 +59,9 @@ var Main = React.createClass({
         console.log('Gonna Fetch:' + subreddit);
 
         if (subreddit.length > 0) {
-            var url = 'http://www.reddit.com/r/' + subreddit + '/new.json?' + 'limit=' + limit + '&after=' + after;
+            var url = 'https://www.reddit.com/r/' + subreddit + '/new.json?' + 'limit=' + limit + '&after=' + after;
         } else {
-            var url = 'http://www.reddit.com/new.json?' + 'limit=' + limit + '&after=' + after;
+            var url = 'https://www.reddit.com/new.json?' + 'limit=' + limit + '&after=' + after;
         }
 
         $.getJSON(url)
